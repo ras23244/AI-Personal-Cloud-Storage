@@ -1,0 +1,68 @@
+.env
+node_modules
+
+# =========================
+# Node.js
+# =========================
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Environment variables
+.env
+.env.*
+!.env.example
+
+# Logs
+logs/
+*.log
+
+# Build output
+dist/
+build/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# =========================
+# Python (Docling service)
+# =========================
+venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Python env files
+.env
+.env.*
+
+# Jupyter / misc
+.ipynb_checkpoints/
+
+# =========================
+# Cloud / uploads (IMPORTANT)
+# =========================
+uploads/
+temp/
+tmp/
+
+# NEVER commit downloaded files or chunks
+chunks/
+parsed_docs/
+
+# =========================
+# IDE
+# =========================
+.vscode/
+.idea/
+
+# =========================
+# Secrets
+# =========================
+*.pem
+*.key
+*.crt
