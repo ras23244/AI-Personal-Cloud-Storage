@@ -42,14 +42,12 @@ exports.uploadComplete = async (req, res) => {
 
         await file.save();
 
-        await fileProcessingQueue.add("process-file",{
+        await fileProcessingQueue.add("process-file", {
             key,
             fileName,
-            userId: req.user.userId
+            userId: req.user.userId,
+            fileIdReal: file._id.toString() 
         })
-
-        const jobs = await fileProcessingQueue.getJobs();
-        console.log(jobs);
 
         res.json({ message: "File metadata saved" });
 

@@ -15,7 +15,7 @@ const fileSchema = new mongoose.Schema({
     size: Number,
     stage:{
         type: String,
-        enum: ["uploaded", "processing", "processed","failed"],
+        enum: ["uploading", "processing", "processed","failed"],
         default: "processing"
     },
 
