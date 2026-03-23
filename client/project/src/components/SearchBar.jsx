@@ -1,8 +1,13 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Search, Loader as Loader2 } from 'lucide-react';
 
-const SearchBar = ({ onSearch, loading }) => {
-  const [query, setQuery] = useState('');
+const SearchBar = ({ onSearch, loading, initialQuery = '' }) => {
+  const [query, setQuery] = useState(initialQuery);
+
+  
+  useEffect(() => {
+    setQuery(initialQuery);
+  }, [initialQuery]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -21,6 +26,7 @@ const SearchBar = ({ onSearch, loading }) => {
             <Search className="w-5 h-5 text-gray-400" />
           )}
         </div>
+
         <input
           type="text"
           value={query}
@@ -29,6 +35,7 @@ const SearchBar = ({ onSearch, loading }) => {
           className="w-full pl-12 pr-4 py-4 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all text-base"
           disabled={loading}
         />
+
         <button
           type="submit"
           disabled={loading || !query.trim()}
@@ -37,6 +44,7 @@ const SearchBar = ({ onSearch, loading }) => {
           Search
         </button>
       </div>
+
       <p className="mt-2 text-sm text-gray-500">
         Try searching by meaning, not just keywords. For example: "financial projections for Q4"
       </p>

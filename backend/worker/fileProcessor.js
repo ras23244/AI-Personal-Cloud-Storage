@@ -16,7 +16,6 @@ const { generateEmbeddingsBatch } = require("../services/embeddingService")
 const File = require("../models/File")
 const index = require("../config/pinecone")
 
-console.log("MONGO_URI:", process.env.MONGO_URI)
 
 new Worker(
 

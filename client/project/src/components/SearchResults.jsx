@@ -37,7 +37,7 @@ const SearchResults = ({ results, query, onFileClick }) => {
 
       {results.map((result, index) => (
         <div
-          key={result._id}
+          key={result.fileId}
           className="bg-white border border-gray-200 rounded-xl p-6 hover:shadow-lg transition-all cursor-pointer group"
           onClick={() => onFileClick(result)}
         >
@@ -54,7 +54,7 @@ const SearchResults = ({ results, query, onFileClick }) => {
                 <div className="flex items-center gap-2 ">
                   <div className="flex items-center gap-1 px-3 py-1 bg-green-100 text-green-700 rounded-full text-sm font-medium">
                     <TrendingUp className="w-4 h-4" />
-                    {Math.round(result.relevanceScore * 100)}% match
+                    {Math.round(result.score * 100)}% match
                   </div>
                 </div>
               </div>

@@ -1,27 +1,62 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useState, useEffect, useRef } from 'react';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import SearchBar from '../components/SearchBar';
 import SearchResults from '../components/SearchResults';
 import { searchService } from '../services/api';
 import { Search, Sparkles } from 'lucide-react';
 
 const SearchPage = () => {
+  const [searchParams, setSearchParams] = useSearchParams();
+  const navigate = useNavigate();
+
   const [results, setResults] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-  const [currentQuery, setCurrentQuery] = useState('');
-  const navigate = useNavigate();
+  const [currentQuery, setCurrentQuery] = useState(
+    searchParams.get('q') || ''
+  );
 
-  const handleSearch = async (query) => {
-    setLoading(true);
+  // ✅ Cache (query → results)
+  const cacheRef = useRef({});
+
+  // ✅ Run search when coming from back / refresh
+  useEffect(() => {
+    const queryFromUrl = searchParams.get('q');
+    if (queryFromUrl) {
+      handleSearch(queryFromUrl, false);
+    }
+  }, []);
+
+  const handleSearch = async (query, updateUrl = true) => {
     setError('');
     setCurrentQuery(query);
 
+    // ✅ update URL
+    if (updateUrl) {
+      setSearchParams({ q: query });
+    }
+
+    // ✅ 1. Check cache
+    if (cacheRef.current[query]) {
+      console.log('⚡ Using cached results');
+      setResults(cacheRef.current[query]);
+      return;
+    }
+
+    setLoading(true);
+
     try {
       const data = await searchService.search(query);
-      setResults(data.results || []);
+      const resultsData = data.results || [];
+
+      // ✅ 2. Save to cache
+      cacheRef.current[query] = resultsData;
+
+      setResults(resultsData);
     } catch (err) {
-      setError(err.response?.data?.message || 'Search failed. Please try again.');
+      setError(
+        err.response?.data?.message || 'Search failed. Please try again.'
+      );
       setResults([]);
     } finally {
       setLoading(false);
@@ -29,9 +64,7 @@ const SearchPage = () => {
   };
 
   const handleFileClick = (result) => {
-    navigate(`/file/${result.fileId}`, {
-      state: { searchQuery: currentQuery },
-    });
+    navigate(`/file/${result.fileId}`);
   };
 
   return (
@@ -42,7 +75,9 @@ const SearchPage = () => {
             <Search className="w-6 h-6 text-primary-600" />
           </div>
           <div>
-            <h1 className="text-3xl font-bold text-gray-900">Semantic Search</h1>
+            <h1 className="text-3xl font-bold text-gray-900">
+              Semantic Search
+            </h1>
             <p className="text-gray-600">
               Find documents by meaning, not just keywords
             </p>
@@ -51,7 +86,11 @@ const SearchPage = () => {
       </div>
 
       <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-8 mb-6">
-        <SearchBar onSearch={handleSearch} loading={loading} />
+        <SearchBar
+          onSearch={handleSearch}
+          loading={loading}
+          initialQuery={currentQuery}
+        />
       </div>
 
       {error && (
@@ -78,28 +117,8 @@ const SearchPage = () => {
           </h2>
           <p className="text-gray-700 max-w-2xl mx-auto mb-6">
             Unlike traditional keyword search, our AI understands the meaning and context of your
-            queries. Search for concepts, ideas, and topics across all your documents.
+            queries.
           </p>
-          <div className="grid md:grid-cols-3 gap-6 max-w-3xl mx-auto text-left">
-            <div className="bg-white rounded-lg p-4 shadow-sm">
-              <div className="text-primary-600 font-semibold mb-2">Natural Language</div>
-              <div className="text-sm text-gray-600">
-                Ask questions as you would to a person
-              </div>
-            </div>
-            <div className="bg-white rounded-lg p-4 shadow-sm">
-              <div className="text-primary-600 font-semibold mb-2">Context-Aware</div>
-              <div className="text-sm text-gray-600">
-                Finds documents by meaning, not exact words
-              </div>
-            </div>
-            <div className="bg-white rounded-lg p-4 shadow-sm">
-              <div className="text-primary-600 font-semibold mb-2">Ranked Results</div>
-              <div className="text-sm text-gray-600">
-                Most relevant documents appear first
-              </div>
-            </div>
-          </div>
         </div>
       )}
     </div>

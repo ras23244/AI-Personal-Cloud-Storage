@@ -3,6 +3,7 @@ import { useParams, useLocation, useNavigate } from 'react-router-dom';
 import { fileService } from '../services/api';
 import { FileText, ArrowLeft, Loader as Loader2, Download, Calendar } from 'lucide-react';
 import { formatDistanceToNow } from '../utils/dateUtils';
+import PdfViewer from '../components/PdfViewer';
 
 const FileDetail = () => {
   const { fileId } = useParams();
@@ -120,18 +121,10 @@ const FileDetail = () => {
           </div>
         )}
 
-        <div className="p-6">
-          <div className="bg-gray-50 border-2 border-dashed border-gray-300 rounded-lg p-12 text-center">
-            <FileText className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-            <h3 className="text-lg font-medium text-gray-900 mb-2">PDF Viewer</h3>
-            <p className="text-gray-600 mb-4">
-              Full PDF viewer integration would be displayed here
-            </p>
-            <p className="text-sm text-gray-500">
-              In production, this would show the full PDF with highlighted sections matching your
-              search query
-            </p>
-          </div>
+
+          <div className="p-6">
+            <PdfViewer fileId={fileId} />
+        
         </div>
       </div>
     </div>

@@ -7,7 +7,8 @@ async function generateDownloadUrl(key) {
 
     const command = new GetObjectCommand({
         Bucket: process.env.R2_BUCKET_NAME,
-        Key: key
+        Key: key,
+     
     })
 
     const url = await getSignedUrl(r2Client, command, {
