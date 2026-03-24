@@ -1,4 +1,6 @@
 fastapi
-uvicorn
-docling
+uvicorn[standard]
+pydantic
 requests
+docling
+python-multipart
