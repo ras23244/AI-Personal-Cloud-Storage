@@ -10,7 +10,6 @@ async function test() {
     const emb2 = await generateEmbedding(text2)
     const emb3 = await generateEmbedding(text3)
 
-    console.log("Length:", emb1.length)
 
     // Cosine similarity
     function cosine(a, b) {
@@ -25,8 +24,7 @@ async function test() {
         return dot / (Math.sqrt(magA) * Math.sqrt(magB))
     }
 
-    console.log("Similar (sun vs beach):", cosine(emb1, emb2))
-    console.log("Different (sun vs car):", cosine(emb1, emb3))
+
 }
 
 test()

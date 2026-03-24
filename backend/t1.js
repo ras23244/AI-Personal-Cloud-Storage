@@ -12,11 +12,10 @@ async function test() {
 
     const embedding = await generateEmbedding(query)
 
-    console.log("Query embedding length:", embedding.length)
 
     const results = await searchSimilar(embedding, "test-user")
 
-    console.log("\nTop Results:\n")
+  
     console.dir(results, { depth: null })
 }
 

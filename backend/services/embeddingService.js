@@ -14,7 +14,7 @@ async function generateEmbedding(text) {
 
 // Batch embeddings (controlled parallel processing)
 async function generateEmbeddingsBatch(texts, batchSize = 5) {
-    console.log("generating embeddings for batch of size:", texts.length)
+ 
     const results = []
 
     for (let i = 0; i < texts.length; i += batchSize) {
@@ -25,7 +25,7 @@ async function generateEmbeddingsBatch(texts, batchSize = 5) {
             batch.map(async (text) => {
                 try {
                     const res = await generateEmbedding(text)
-                    console.log("Generated embedding for text of length:", text.length)
+                  
                     return res
                 } catch (err) {
                     console.error("Embedding failed:", err.message)
@@ -33,7 +33,7 @@ async function generateEmbeddingsBatch(texts, batchSize = 5) {
                 }
             })
         )
-        console.log(`Batch ${i / batchSize + 1} processed.`)
+
         results.push(...batchResults)
     }
 

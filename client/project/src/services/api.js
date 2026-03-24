@@ -29,13 +29,13 @@ api.interceptors.response.use(
 
 export const authService = {
   register: async (email, password, name) => {
-    console.log(API_ENDPOINTS.REGISTER);
+   
     const response = await api.post(API_ENDPOINTS.REGISTER, { email, password, name });
     return response.data;
   },
 
   login: async (email, password) => {
-    console.log("login",API_ENDPOINTS.LOGIN);
+    
     const response = await api.post(API_ENDPOINTS.LOGIN, { email, password });
     if (response.data.token) {
       localStorage.setItem('token', response.data.token);
@@ -68,7 +68,7 @@ export const fileService = {
 
   getFiles: async () => {
     const response = await api.get(`${API_ENDPOINTS.FILES}/allfiles`);
-    console.log("getFiles response:", response.data);
+   
     return response.data;
   },
 

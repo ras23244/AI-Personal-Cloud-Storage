@@ -25,7 +25,7 @@ const FileViewer = () => {
                 );
 
                 setPdfUrl(res.data.url);
-                console.log("PDF URL:", res.data.url);
+              
             } catch (err) {
                 console.error(err);
             }

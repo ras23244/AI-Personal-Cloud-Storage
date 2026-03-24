@@ -6,11 +6,11 @@ const generateDownloadUrl = require("../services/presignedDownloadService")
 exports.getFiles=async(req, res)=> {
     try {
         const userId = req.user?.userId;
-        console.log("userId in getFiles controller", userId)
+
         const files = await File.find({
             userId: new mongoose.Types.ObjectId(userId)  
         }).sort({ createdAt: -1 });
-        console.log("Files found:", files.length)
+      
         res.json({
             success: true,
             files

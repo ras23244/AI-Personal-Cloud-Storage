@@ -30,7 +30,6 @@ new Worker(
 
             const { key, fileName, userId, fileIdReal } = job.data;
 
-            console.log("Processing:", fileName, "(key:", key, ")")
 
             // optional: update file stage to 'processing'
             await File.findOneAndUpdate({ key }, { stage: "processing" }, { returnDocument: "after" })
@@ -50,12 +49,10 @@ new Worker(
 
             const chunks = response.data.chunks
 
-            console.log("Chunks generated:", chunks.length)
 
             const validChunks = chunks.filter(chunk => chunk.text && chunk.text.trim().length > 20)
             const texts = validChunks.map(chunk => chunk.text)
 
-            console.log("Valid chunks:", validChunks.length)
 
             if (validChunks.length === 0) {
                 console.warn("No valid text chunks found for:", fileName)
@@ -65,7 +62,6 @@ new Worker(
 
             const embeddings = await generateEmbeddingsBatch(texts, 5)
 
-            console.log("Embeddings generated:", embeddings.length)
 
             if (embeddings.length !== validChunks.length) {
                 console.warn("Embedding count mismatch:", embeddings.length, "vs chunks", validChunks.length)
@@ -99,11 +95,11 @@ new Worker(
 
             // Upsert into Pinecone
             await index.upsert({ records })
-            console.log("Stored in Pinecone:", records.length)
+         
 
             await File.findOneAndUpdate({ key }, { stage: "processed" })
 
-            console.log("File processing finished", fileName)
+          
 
         }
 

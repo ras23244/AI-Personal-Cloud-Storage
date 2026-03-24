@@ -38,7 +38,7 @@ const SearchPage = () => {
 
     // ✅ 1. Check cache
     if (cacheRef.current[query]) {
-      console.log('⚡ Using cached results');
+    
       setResults(cacheRef.current[query]);
       return;
     }

@@ -8,7 +8,7 @@ exports.getUploadUrl = async (req, res) => {
     try {
 
         const { fileName, fileType } = req.body;
-        console.log("user id", req.user.userId);
+      
         const key = `${req.user.userId}/${uuidv4()}-${fileName}`;
 
         const uploadUrl = await generateUploadUrl(key, fileType);
